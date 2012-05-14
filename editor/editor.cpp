@@ -24,6 +24,7 @@ int	  idCentral;
 int	  idSub1;
 int	  idSub2;
 int   idv3d; //id ventana dibujo en 3D
+int id3dCentral;
 bool  dibuja = 0;
 bool  drawFigure=1;
 int fondoRojo = 1.0;
@@ -245,6 +246,37 @@ void centralDisplay(void)
 	glFlush();
 	glutSwapBuffers();
 }
+void central3dDisplay(void)
+{
+	glClear (GL_COLOR_BUFFER_BIT);
+	
+	//Dibujar nombres
+	glColor3f(.0, .0, .0);
+	glRasterPos2f (32, 91);
+	dibujarTitulo("SEBASTIAN MATYSIAK");
+	glRasterPos2f (32, 105);
+	dibujarTitulo("MATTEO MASCIOTTA");
+	
+	//Dibujamos un cuadradito alrededor de los nombres
+	glColor3f(1.0, 1.0, 1.0);
+	glLineWidth(10);
+	glBegin(GL_LINES);
+		glVertex2f(20.0,20.0); 
+		glVertex2f(180.0,20.0);
+	
+		glVertex2f(20.0,20.0); 
+		glVertex2f(20.0,180.0);
+
+		glVertex2f(180.0,20.0); 
+		glVertex2f(180.0,180.0);
+
+		glVertex2f(180.0,180.0); 
+		glVertex2f(20.0,180.0);
+	glEnd();
+
+	glutSwapBuffers();
+}
+
 void centralRedisplay (int w, int h)
 	{
 	glutReshapeWindow(TamVentana, TamVentana);
@@ -374,6 +406,11 @@ void subDisplay2(void)
 	glFlush();
 	glutSwapBuffers();
 }
+
+void v3Ddisplay(void){
+	
+	
+}
 void redisplay2 (int w, int h)
 	{
 	glutReshapeWindow(TamSubVentana, TamSubVentana);
@@ -463,6 +500,26 @@ void inicializaSub2 (void)
 	glutReshapeFunc (redisplay2);
 
 	}
+void inicializa3D(void){
+	
+}
+void inicializa3dCentral(void){
+	{
+
+	// selecciona el color de borrado 
+	glClearColor (0.0, 1.0, 1.0, 0.0);
+
+	// inicializa los valores de la vista 
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluOrtho2D(0, TamSubVentana, 0,TamSubVentana);
+	
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	glutReshapeFunc (redisplay1);
+	}
+}
+
 void inicializarMenu(int a) 
 {
 	switch(a)
@@ -656,9 +713,14 @@ void main(int argc, char** argv)
 
 	//------Ventana con dibujo en 3D-------
 	idv3d = glutCreateWindow("dibujo en 3 dimesiones");
-	inicializa3D£();
-	glutDisplayFunc(centralDisplay);
-
+	inicializa3D();
+	glutDisplayFunc(v3Ddisplay);
+	//------subventana3DCentral-------
+	id3dCentral = glutCreateSubWindow(idv3d,0,0,400,600);
+     inicializa3dCentral();
+	glutDisplayFunc(central3dDisplay);
+	//inicializaSub1();
+	//glutDisplayFunc(subDisplay1);
 
 
 	// Inicializar valores
