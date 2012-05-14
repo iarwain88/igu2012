@@ -7,29 +7,11 @@
 #include "Rejilla.h"
 #include "Trayectoria.h"
 
-
-
-
-// *************************************************************************
-//				         ESTOY TRABAJANDO YO
-//	  SI QUIERES TRABAJAR SOBRE EL CODIGO DIMELO ANTES DE MODIFICAR
-
-//**************************************************************************
-//1. cambiar tambien color de titulos al cambiar el color de fondo
-//2. anadir eleccion de ficheros
-
-
-
 using namespace std;
-
-
-GLUI *glui;
-GLUI_RadioGroup *radio;
-GLUI_EditText   *filetext, *wtajtext, *wfigtext;
-
 
 char  fichero[128];
 char fnombre[20];
+
 
 int   TamVentana = 400;
 int   TamVentanaX = 400;
@@ -41,6 +23,7 @@ int	  idPrincipal;
 int	  idCentral;
 int	  idSub1;
 int	  idSub2;
+int   idv3d; //id ventana dibujo en 3D
 bool  dibuja = 0;
 bool  drawFigure=1;
 int fondoRojo = 1.0;
@@ -76,7 +59,6 @@ void guardar(int b)
 	figura.guardar(fichero);
 	fichero.close();
 }
-
 void cargar(int a)
 {
 	ifstream fichero(fnombre);
@@ -89,9 +71,6 @@ void cargar(int a)
 	}
 	fichero.close();
 }	
-
-
-
 void click_raton(int button, int state, int x, int y)
 {
 
@@ -143,7 +122,6 @@ void dibujarEjesT(bool esTrayectoria)
 		glVertex2f(AT/3,0.5);
 	glEnd();
 }
-
 void dibujarEjesF(bool esTrayectoria)
 {		
 	glLineWidth(2.0f);
@@ -674,6 +652,14 @@ void main(int argc, char** argv)
 	idCentral = glutCreateSubWindow(idPrincipal,0,200,400,400);
 	inicializaCentral();
 	glutDisplayFunc(centralDisplay);
+
+
+	//------Ventana con dibujo en 3D-------
+	idv3d = glutCreateWindow("dibujo en 3 dimesiones");
+	inicializa3D£();
+	glutDisplayFunc(centralDisplay);
+
+
 
 	// Inicializar valores
 	inicializa ();
