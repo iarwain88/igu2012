@@ -45,6 +45,8 @@ public:
 
 	void limpiarTrayectoria();
 
+	VectorVec2 get_pTrayectoria();
+
 private:
 
 

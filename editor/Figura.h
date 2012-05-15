@@ -45,6 +45,8 @@ public:
 
 	void limpiarFigura();
 
+	VectorVec2 get_puntos();
+
 private:
 	Vec2 _proximoPunto; // Proximo punto que se añadirá
 	VectorVec2 _puntos; // Vector de puntos de la figura

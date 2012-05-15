@@ -90,6 +90,11 @@ void Trayectoria::cargar(istream& input)
 	}
 }
 
+VectorVec2 Trayectoria::get_pTrayectoria()
+{
+	return _pTrayectoria;
+}
+
 void Trayectoria::limpiarTrayectoria()
 {
 	_pTrayectoria.clear();

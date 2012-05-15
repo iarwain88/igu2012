@@ -86,6 +86,11 @@ void Figura::cargar(istream& input )
 	}
 }
 
+VectorVec2 Figura::get_puntos()
+{
+	return _puntos;
+}
+
 void Figura::limpiarFigura()
 {
 	_puntos.clear();

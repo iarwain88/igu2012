@@ -12,7 +12,6 @@ using namespace std;
 char  fichero[128];
 char fnombre[20];
 
-
 int   TamVentana = 400;
 int   TamVentanaX = 400;
 int   TamVentanaY = 600;
@@ -35,19 +34,34 @@ Figura  figura; //ventana ischierda
 Trayectoria  trayectoria; //dibujo de trayectoria
 Rejilla rejilla;  //para dibujar rejillas
 
+void extrusion()
+{
+	//cojo la figura y trayectoria
+	//cada punto(x) de esta figura (en sentido antihorario) traslado sobre el x valor del vector(x) de la trayectoria. 
+	//guardo cada figura trasladado en un estructura de datos añadiendo la componente y
+	//visualizo en 3 dimensiones
+	int n = figura.get_puntos().size();
+	VectorVec2 temp = trayectoria.get_pTrayectoria();
+	for (int i = 0; i < n; i++)
+	{
+
+	}
+
+	
+}
 void actualizarVentanas() //actualizar ventanas cetral y ventana dos al cambiar opciones
 {
 	glutSetWindow(idCentral);
 	glutPostRedisplay(); 
 	glutSetWindow(idSub2);
 	glutPostRedisplay();
-    glutSetWindow(idCentral);
+	glutSetWindow(idCentral);
 }
 void dibujarTitulo (char *t)
 {
-  unsigned int i;
-  for (i = 0; i < strlen(t); i++)
-    glutBitmapCharacter (GLUT_BITMAP_HELVETICA_12, t[i]);
+	unsigned int i;
+	for (i = 0; i < strlen(t); i++)
+		glutBitmapCharacter (GLUT_BITMAP_HELVETICA_12, t[i]);
 }
 void guardar(int b) 
 {
@@ -86,7 +100,7 @@ void click_raton(int button, int state, int x, int y)
 				else
 					trayectoria.fijarPunto();
 
-			glutPostRedisplay();
+				glutPostRedisplay();
 
 			}
 			break;
@@ -113,28 +127,28 @@ void dibujarEjesT(bool esTrayectoria)
 {		
 	glLineWidth(2.0f);
 	glBegin(GL_LINES);
-		//eje Y
-		esTrayectoria ? glColor3f(0, 1, 0) : glColor3f(0, 0, 1);
-		glVertex2f(0,-AT/3);
-		glVertex2f(0,AT/3);
-		//eje X
-		glColor3f(1, 0, 0);
-		glVertex2f(-AT/3,0.5);
-		glVertex2f(AT/3,0.5);
+	//eje Y
+	esTrayectoria ? glColor3f(0, 1, 0) : glColor3f(0, 0, 1);
+	glVertex2f(0,-AT/3);
+	glVertex2f(0,AT/3);
+	//eje X
+	glColor3f(1, 0, 0);
+	glVertex2f(-AT/3,0.5);
+	glVertex2f(AT/3,0.5);
 	glEnd();
 }
 void dibujarEjesF(bool esTrayectoria)
 {		
 	glLineWidth(2.0f);
 	glBegin(GL_LINES);
-		//eje Y
-		esTrayectoria ? glColor3f(0, 1, 0) : glColor3f(0, 0, 1);
-		glVertex2f(0,-AF/3);
-		glVertex2f(0,AF/3);
-		//eje X
-		glColor3f(1, 0, 0);
-		glVertex2f(-AF/3,0);
-		glVertex2f(AF/3,0);
+	//eje Y
+	esTrayectoria ? glColor3f(0, 1, 0) : glColor3f(0, 0, 1);
+	glVertex2f(0,-AF/3);
+	glVertex2f(0,AF/3);
+	//eje X
+	glColor3f(1, 0, 0);
+	glVertex2f(-AF/3,0);
+	glVertex2f(AF/3,0);
 	glEnd();
 }
 void teclado(unsigned char tecla, int x, int y)
@@ -202,7 +216,7 @@ void centralDisplay(void)
 		glColor3f(.0, .0, .0);
 		glRasterPos2f (AT/4, AT/40);
 		dibujarTitulo("X");
-					
+
 		glRasterPos2f (AT/40, AT/1.3);
 		dibujarTitulo("Y");
 
@@ -222,14 +236,14 @@ void centralDisplay(void)
 		//rejilla.dibujar(TamVentana);
 		rejilla.dibujar(AF);
 		glPopMatrix();
-		
+
 		// Dibujar ejes
 		dibujarEjesF(0);
 
 		glColor3f(.0, .0, .0);
 		glRasterPos2f (AF/-2.5, AF/2.5);
 		dibujarTitulo("FIGURA");
-	
+
 
 		//dibujar nombres ejes
 		glColor3f(.0, .0, .0);
@@ -247,84 +261,94 @@ void centralDisplay(void)
 	glutSwapBuffers();
 }
 void central3dDisplay(void)
-{
-	glClear (GL_COLOR_BUFFER_BIT);
-	
-	//Dibujar nombres
-	glColor3f(.0, .0, .0);
-	glRasterPos2f (32, 91);
-	dibujarTitulo("SEBASTIAN MATYSIAK");
-	glRasterPos2f (32, 105);
-	dibujarTitulo("MATTEO MASCIOTTA");
-	
-	//Dibujamos un cuadradito alrededor de los nombres
-	glColor3f(1.0, 1.0, 1.0);
-	glLineWidth(10);
+{		
+	glClear(GL_COLOR_BUFFER_BIT);
+	glClearColor (0.0, 0.0, 0.0, 0.0);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+
 	glBegin(GL_LINES);
-		glVertex2f(20.0,20.0); 
-		glVertex2f(180.0,20.0);
-	
-		glVertex2f(20.0,20.0); 
-		glVertex2f(20.0,180.0);
+	// Eje X color Rojo
+	glColor3f (1.0, 0.0, 0.0);
+	glVertex3f(0.0,0.0,0.0);
+	glVertex3f(10.0,0.0,0.0);
 
-		glVertex2f(180.0,20.0); 
-		glVertex2f(180.0,180.0);
+	// Eje Y color Verde
+	glColor3f (0.0, 1.0, 0.0);	
+	glVertex3f(0.0,0.0,0.0);
+	glVertex3f(0.0,10.0,0.0);	
 
-		glVertex2f(180.0,180.0); 
-		glVertex2f(20.0,180.0);
+	// Eje Z color Azul
+	glColor3f (0.0, 0.0, 1.0);	
+	glVertex3f(0.0,0.0,0.0);
+	glVertex3f(0.0,0.0,10.0);
 	glEnd();
+
+	glColor3f (1.0, 1.0, 1.0);
+	// Se almacena el estado de la matriz
+	glPushMatrix();
+
+	// Se dibuja un cubo de lado 3.0 centrado en el origen
+	// Se rota 60º respecto al eje Y, se escala y se traslada
+	glTranslatef(0.0,5.0,5.0);
+	glScalef (1.0, 2.0, 1.0); 
+	glRotatef(60.0,0.0,1.0,0.0);
+	glutWireCube(3.0);
+
+	// Se recupera el estado de la matriz
+	glPopMatrix();
+
+	// Se dibuja un cubo de lado 4.0 centrado en el origen y
+	// girado 30º respecto al eje Y
+	glColor3f (1.0, 1.0, 0.0);
+	glRotatef(30.0,0.0,1.0,0.0);
+	glutWireCube(4.0);
 
 	glutSwapBuffers();
 }
-
 void centralRedisplay (int w, int h)
-	{
+{
 	glutReshapeWindow(TamVentana, TamVentana);
-	}
+}
 void redisplay (int w, int h)
-	{
+{
 	glutReshapeWindow(TamVentanaX, TamVentanaY);
 	glViewport(0,0,400,400);
-	}
+}
 void subDisplay1(void)
 {
 	glClear (GL_COLOR_BUFFER_BIT);
-	
+
 	//Dibujar nombres
 	glColor3f(.0, .0, .0);
 	glRasterPos2f (32, 91);
 	dibujarTitulo("SEBASTIAN MATYSIAK");
 	glRasterPos2f (32, 105);
 	dibujarTitulo("MATTEO MASCIOTTA");
-	
+
 	//Dibujamos un cuadradito alrededor de los nombres
 	glColor3f(1.0, 1.0, 1.0);
 	glLineWidth(10);
 	glBegin(GL_LINES);
-		glVertex2f(20.0,20.0); 
-		glVertex2f(180.0,20.0);
-	
-		glVertex2f(20.0,20.0); 
-		glVertex2f(20.0,180.0);
+	glVertex2f(20.0,20.0); 
+	glVertex2f(180.0,20.0);
 
-		glVertex2f(180.0,20.0); 
-		glVertex2f(180.0,180.0);
+	glVertex2f(20.0,20.0); 
+	glVertex2f(20.0,180.0);
 
-		glVertex2f(180.0,180.0); 
-		glVertex2f(20.0,180.0);
+	glVertex2f(180.0,20.0); 
+	glVertex2f(180.0,180.0);
+
+	glVertex2f(180.0,180.0); 
+	glVertex2f(20.0,180.0);
 	glEnd();
 
 	glutSwapBuffers();
 }
 void redisplay1 (int w, int h)
-	{
+{
 
-	}
-///-/-/-/-/----end ventana 1---/-/-/-/-/
-
-
-
-//**************ventana 2*******************
+}
 void subDisplay2(void)
 {
 
@@ -356,7 +380,7 @@ void subDisplay2(void)
 		glColor3f(.0, .0, .0);
 		glRasterPos2f (AT/4, AT/40);
 		dibujarTitulo("X");
-					
+
 		glRasterPos2f (AT/40, AT/1.3);
 		dibujarTitulo("Y");
 
@@ -406,60 +430,49 @@ void subDisplay2(void)
 	glFlush();
 	glutSwapBuffers();
 }
-
-void v3Ddisplay(void){
-	
+void v3Ddisplay(void)
+{
 	
 }
 void redisplay2 (int w, int h)
-	{
+{
 	glutReshapeWindow(TamSubVentana, TamSubVentana);
-	}
-///-/-/-/------end ventana 2----/-/-/-/-/-/-/-/-/-/
-
-
-
-// to get the mouse click on the subwindow2 to switch the windows each other
-//TODO -- reshape the size of the 2 draws
-
+}
 void click_raton_sub2(int button, int state, int x, int y)
 {
 	switch (button) {
-		case GLUT_LEFT_BUTTON:
-			if (state==GLUT_UP)
-			{
-				drawFigure=!drawFigure;
-				// to refresh both windows (sub1 y principal)
-				//if not, refreshing only on mouse over window
-				glutPostRedisplay();
-				glutSetWindow(idCentral);
-				glutPostRedisplay();
-			}
-			break;
+	case GLUT_LEFT_BUTTON:
+		if (state==GLUT_UP)
+		{
+			drawFigure=!drawFigure;
+			glutPostRedisplay();
+			glutSetWindow(idCentral);
+			glutPostRedisplay();
+		}
+		break;
 	}
 }
 void inicializa (void) 
-	{
+{
 	glutSetWindow(idPrincipal);
-
 	glutMouseFunc (click_raton);
 	glutPassiveMotionFunc(mover_raton);
 	glutReshapeFunc (redisplay);
 	glutKeyboardFunc(teclado);
 }
 void inicializaCentral(void) 
-	{
+{
 
 	// selecciona el color de borrado 
 	glClearColor (1.0, 1.0, 1.0, 1.0);
 	glViewport(0,0,400,400);
-	
+
 
 	// inicializa los valores de la vista 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	
-	
+
+
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	//glutReshapeFunc (redisplay1);
@@ -471,9 +484,9 @@ void inicializaCentral(void)
 	glutKeyboardFunc(teclado);
 
 
-	}
+}
 void inicializaSub1 (void) 
-	{
+{
 
 	// selecciona el color de borrado 
 	glClearColor (0.0, 1.0, 1.0, 0.0);
@@ -482,131 +495,142 @@ void inicializaSub1 (void)
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	gluOrtho2D(0, TamSubVentana, 0,TamSubVentana);
-	
+
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	glutReshapeFunc (redisplay1);
-	}
+}
 void inicializaSub2 (void) 
-	{
+{
 
 	// selecciona el color de borrado 
 	glClearColor (1.0, 1.0, 1.0, 1.0);
 
-	
+
 	//funcion para determinar que hacer si el raton
 	// esta en la subventana 1 y hay una pinchada 
 	glutMouseFunc(click_raton_sub2);
 	glutReshapeFunc (redisplay2);
 
-	}
-void inicializa3D(void){
-	
+}
+void inicializa3D(void)
+{
+
 }
 void inicializa3dCentral(void){
 	{
+		// Prepara la proyección 
+	glMatrixMode (GL_PROJECTION);   
+	glLoadIdentity ();  
+	// Define el volumen de la vista de la proyección perspectiva
+	gluPerspective (90, 1, 1.0, 220.0);    
 
-	// selecciona el color de borrado 
-	glClearColor (0.0, 1.0, 1.0, 0.0);
+	gluLookAt(10.0,10.0,10.0,0.0,0.0,0.0,0.0,1.0,0.0);	
+	// Define el marco (coordenadas del origen y tamaño ancho y alto en pixeles)
+	//glViewport (0, 0, 1, 1);
 
-	// inicializa los valores de la vista 
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	gluOrtho2D(0, TamSubVentana, 0,TamSubVentana);
+	// Se activa la matriz del modelo de la vista
+	//glMatrixMode (GL_MODELVIEW);
 	
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-	glutReshapeFunc (redisplay1);
+		//// selecciona el color de borrado 
+		//glClearColor (0.0, 0.0, 0.0, 0.0);
+
+		//// inicializa los valores de la vista 
+		//glMatrixMode(GL_PROJECTION);
+		//glLoadIdentity();
+		//gluOrtho2D(0, TamSubVentana, 0,TamSubVentana);
+
+		//glMatrixMode(GL_MODELVIEW);
+		//glLoadIdentity();
+		//glutReshapeFunc (redisplay1);
 	}
 }
-
 void inicializarMenu(int a) 
 {
 	switch(a)
 	{
-		case 0: cargar(1); actualizarVentanas(); break;
-		case 1: guardar(1); break;
-		case 2: trayectoria.limpiarTrayectoria(); figura.limpiarFigura(); actualizarVentanas(); break;
-		case 3: rejilla.mostrarRejilla(); actualizarVentanas(); break;
+	case 0: cargar(1); actualizarVentanas(); break;
+	case 1: guardar(1); break;
+	case 2: trayectoria.limpiarTrayectoria(); figura.limpiarFigura(); actualizarVentanas(); break;
+	case 3: rejilla.mostrarRejilla(); actualizarVentanas(); break;
 	}
 }
-
 void cambiarColorRejilla(int a)
 {
 	switch(a)
 	{
-		case 0: rejilla.cambiarColor(.0,.0,.0); 
-				actualizarVentanas();
-				break;
+	case 0: rejilla.cambiarColor(.0,.0,.0); 
+		actualizarVentanas();
+		break;
 
-		case 1: rejilla.cambiarColor(.9,.65,.65); 
-				actualizarVentanas();
-				break;
+	case 1: rejilla.cambiarColor(.9,.65,.65); 
+		actualizarVentanas();
+		break;
 	}
 }
 void cambiarColorFondo(int a)
 {
 	switch(a)
 	{
-		case 0:  fondoRojo = .0; fondoVerde = .0; fondoAzul = .0; 
-			
-			glutSetWindow(idCentral);
-			glClear (GL_COLOR_BUFFER_BIT);
-		
-			glClearColor(fondoRojo,fondoVerde,fondoAzul,1.0);
-			glutPostRedisplay();
-			glutSetWindow(idSub2);
+	case 0:  fondoRojo = .0; fondoVerde = .0; fondoAzul = .0; 
+
+		glutSetWindow(idCentral);
+		glClear (GL_COLOR_BUFFER_BIT);
+
+		glClearColor(fondoRojo,fondoVerde,fondoAzul,1.0);
+		glutPostRedisplay();
+		glutSetWindow(idSub2);
 
 
-			glClear (GL_COLOR_BUFFER_BIT);
-			glClearColor(fondoRojo,fondoVerde,fondoAzul,1.0);
-			glutPostRedisplay();
+		glClear (GL_COLOR_BUFFER_BIT);
+		glClearColor(fondoRojo,fondoVerde,fondoAzul,1.0);
+		glutPostRedisplay();
 
-			 break;
-		case 1:  fondoRojo = 1.0; fondoVerde = 1.0; fondoAzul = 1.0;
-				glutSetWindow(idCentral);
-			glClear (GL_COLOR_BUFFER_BIT);
-		
-			glClearColor(fondoRojo,fondoVerde,fondoAzul,1.0);
-			glutPostRedisplay();
-			glutSetWindow(idSub2);
-			glClear (GL_COLOR_BUFFER_BIT);
-			glClearColor(fondoRojo,fondoVerde,fondoAzul,1.0);
-			glutPostRedisplay();
-			
-			break;
+		break;
+	case 1:  fondoRojo = 1.0; fondoVerde = 1.0; fondoAzul = 1.0;
+		glutSetWindow(idCentral);
+		glClear (GL_COLOR_BUFFER_BIT);
+
+		glClearColor(fondoRojo,fondoVerde,fondoAzul,1.0);
+		glutPostRedisplay();
+		glutSetWindow(idSub2);
+		glClear (GL_COLOR_BUFFER_BIT);
+		glClearColor(fondoRojo,fondoVerde,fondoAzul,1.0);
+		glutPostRedisplay();
+
+		break;
 	}
 }
 void cambiarColorFigura(int a)
 {
 	switch(a)
 	{
-		case 0:  figura.cambiarColor(0.0,0.0,0.0); actualizarVentanas(); break;
-		case 1:  figura.cambiarColor(0.0,1.0,1.0); actualizarVentanas(); break;
+	case 0:  figura.cambiarColor(0.0,0.0,0.0); actualizarVentanas(); break;
+	case 1:  figura.cambiarColor(0.0,1.0,1.0); actualizarVentanas(); break;
 	}
 }
 void cambiarColorTrayectoria(int a)
 {
 	switch(a)
 	{
-		case 0:  trayectoria.cambiarColor(1.0,1.0,1.0); actualizarVentanas(); break;
-		case 1:  trayectoria.cambiarColor(0.0,1.0,1.0); actualizarVentanas(); break;
+	case 0:  trayectoria.cambiarColor(1.0,1.0,1.0); actualizarVentanas(); break;
+	case 1:  trayectoria.cambiarColor(0.0,1.0,1.0); actualizarVentanas(); break;
 	}
 }
 void cambiarResRejilla(int a)
 {
 	switch(a)
 	{
-		case 0:  rejilla.cambiarResolucion(1); actualizarVentanas(); break;
-		case 1:  rejilla.cambiarResolucion(0); actualizarVentanas(); break;
+	case 0:  rejilla.cambiarResolucion(1); actualizarVentanas(); break;
+	case 1:  rejilla.cambiarResolucion(0); actualizarVentanas(); break;
 	}
 }
 void borrarUltimoPunto(int a)
 {
 	switch(a)
 	{
-		case 0:  trayectoria.borrarUltimoPunto(); actualizarVentanas(); break;
-		case 1:  figura.borrarUltimoPunto(); actualizarVentanas(); break;
+	case 0:  trayectoria.borrarUltimoPunto(); actualizarVentanas(); break;
+	case 1:  figura.borrarUltimoPunto(); actualizarVentanas(); break;
 	}
 }
 void cambiarColor(int a) {}
@@ -650,7 +674,7 @@ void crearMenu()
 	glutAddMenuEntry("Cargar fichero", 0);
 	glutAddMenuEntry("Guardar fichero", 1);
 	glutAddMenuEntry("Limpiar todo", 2);
-		
+
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
 }
 void main(int argc, char** argv)
@@ -679,7 +703,7 @@ void main(int argc, char** argv)
 	else 
 		AT = temp;
 
-		cout << "Pon la anchura de la ventana de figura, 0 para valor de default: ";
+	cout << "Pon la anchura de la ventana de figura, 0 para valor de default: ";
 	cin >> temp;
 	if (temp==0){
 		cout << "Cargado valor por defecto: 400 " <<endl;}
@@ -703,8 +727,6 @@ void main(int argc, char** argv)
 	inicializaSub2();
 	glutDisplayFunc(subDisplay2);
 
-
-
 	//------subventanaCentral-------
 	idCentral = glutCreateSubWindow(idPrincipal,0,200,400,400);
 	inicializaCentral();
@@ -717,7 +739,7 @@ void main(int argc, char** argv)
 	glutDisplayFunc(v3Ddisplay);
 	//------subventana3DCentral-------
 	id3dCentral = glutCreateSubWindow(idv3d,0,0,400,600);
-     inicializa3dCentral();
+	inicializa3dCentral();
 	glutDisplayFunc(central3dDisplay);
 	//inicializaSub1();
 	//glutDisplayFunc(subDisplay1);
@@ -733,7 +755,3 @@ void main(int argc, char** argv)
 	// Comienza el bucle de dibujo y proceso de eventos.
 	glutMainLoop();
 }
-
-
-
-
