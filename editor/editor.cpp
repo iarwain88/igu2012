@@ -264,34 +264,35 @@ void centralDisplay(void)
 }
 void central3dDisplay(void)
 {
-	//
-	//glClear (GL_COLOR_BUFFER_BIT);
-	//
-	////Dibujar nombres
-	//glColor3f(.0, .0, .0);
-	//glRasterPos2f (32, 91);
-	//dibujarTitulo("SEBASTIAN MATYSIAK");
-	//glRasterPos2f (32, 105);
-	//dibujarTitulo("MATTEO MASCIOTTA");
-	//
-	////Dibujamos un cuadradito alrededor de los nombres
-	//glColor3f(1.0, 1.0, 1.0);
-	//glLineWidth(10);
-	//glBegin(GL_LINES);
-	//	glVertex2f(20.0,20.0); 
-	//	glVertex2f(180.0,20.0);
-	//
-	//	glVertex2f(20.0,20.0); 
-	//	glVertex2f(20.0,180.0);
+	
+	
+	glClear (GL_COLOR_BUFFER_BIT);
+	
+	//Dibujar nombres
+	glColor3f(.0, .0, .0);
+	glRasterPos2f (32, 91);
+	dibujarTitulo("SEBASTIAN MATYSIAK");
+	glRasterPos2f (32, 105);
+	dibujarTitulo("MATTEO MASCIOTTA");
+	
+	//Dibujamos un cuadradito alrededor de los nombres
+	glColor3f(1.0, 1.0, 1.0);
+	glLineWidth(10);
+	glBegin(GL_LINES);
+		glVertex2f(20.0,20.0); 
+		glVertex2f(180.0,20.0);
+	
+		glVertex2f(20.0,20.0); 
+		glVertex2f(20.0,180.0);
 
-	//	glVertex2f(180.0,20.0); 
-	//	glVertex2f(180.0,180.0);
+		glVertex2f(180.0,20.0); 
+		glVertex2f(180.0,180.0);
 
-	//	glVertex2f(180.0,180.0); 
-	//	glVertex2f(20.0,180.0);
-	//glEnd();
+		glVertex2f(180.0,180.0); 
+		glVertex2f(20.0,180.0);
+	glEnd();
 
-	//glutSwapBuffers();
+	glutSwapBuffers();
 }
 
 void centralRedisplay (int w, int h)
@@ -426,10 +427,10 @@ void subDisplay2(void)
 
 
 void redisplay3d(int w, int h){
-	glutReshapeWindow(700, 700);
+	
 }
 void v3Ddisplay(void){
-	glutReshapeWindow(700, 700);
+	
 	glutReshapeFunc (redisplay3d);
 	// selecciona el color de borrado 
 	glClearColor (1.0, 1.0, 1.0, 1.0);
@@ -529,6 +530,7 @@ void inicializaSub2 (void)
 void inicializa3D(void){
 	
 	
+	glClearColor (0.0, 0.0, 1.0, 1.0);
 }
 
 
@@ -536,7 +538,7 @@ void inicializa3dCentral(void){
 	{
 
 	// selecciona el color de borrado 
-	glClearColor (0.0, 1.0, 1.0, 0.0);
+	glClearColor (0.0, 0.0, 1.0, 0.0);
 
 	// inicializa los valores de la vista 
 	glMatrixMode(GL_PROJECTION);
@@ -546,7 +548,7 @@ void inicializa3dCentral(void){
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	
-	
+		
 	}
 }
 
@@ -760,8 +762,6 @@ void main(int argc, char** argv)
 	inicializaSub2();
 	glutDisplayFunc(subDisplay2);
 
-
-
 	//------subventanaCentral-------
 	idCentral = glutCreateSubWindow(idPrincipal,0,200,400,400);
 	inicializaCentral();
@@ -769,13 +769,14 @@ void main(int argc, char** argv)
 
  
 
-
+glutInitWindowSize (700, 700); 
 	//------Ventana con dibujo en 3D-------
 	idv3d = glutCreateWindow("dibujo en 3D");
-	inicializa3D();
 	glutDisplayFunc(v3Ddisplay);
-	//------subventana3DCentral-------
-	id3dCentral = glutCreateSubWindow(idv3d,0,0,700,500);
+	inicializa3D();
+
+	//------subventana 3D Central-------
+	id3dCentral = glutCreateSubWindow(idv3d,0,0,577,620);
      inicializa3dCentral();
 	glutDisplayFunc(central3dDisplay);
 	
@@ -795,7 +796,7 @@ application's idle events.  If you do not have an idle callback, pass in NULL.
     GLUI_SUBWINDOW_BOTTOM );
 
 	 GLUI *glui = GLUI_Master.create_glui_subwindow( idv3d,
-    GLUI_SUBWINDOW_BOTTOM );
+		 GLUI_SUBWINDOW_RIGHT );
 	 new GLUI_StaticText( glui, "Menu de control" );
 	 new GLUI_Separator( glui );
 	//glui->add_checkbox( "Lighting", &lighting );
