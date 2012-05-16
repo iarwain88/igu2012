@@ -22,6 +22,8 @@ int	  idCentral;
 int	  idSub1;
 int	  idSub2;
 int   idv3d; //id ventana dibujo en 3D
+int idSub23d;
+int idSub13d;
 int id3dCentral;
 bool  dibuja = 0;
 bool  drawFigure=1;
@@ -183,84 +185,84 @@ void display(void)
 
 void centralDisplay(void)
 {
-//
-//	glutSetWindow(idCentral);
-//	glClear (GL_COLOR_BUFFER_BIT);
-//	glClearColor(fondoRojo,fondoVerde,fondoAzul,1.0);
-//	glMatrixMode(GL_PROJECTION);
-//	glLoadIdentity();
-//
-//	if(!drawFigure)//mostramos trayectoria
-//	{	
-//		gluOrtho2D(-AT/2,AT/2,0,AT);
-//
-//		//dibujar rejillas 
-//		glMatrixMode(GL_MODELVIEW);
-//		glLoadIdentity();
-//		glPushMatrix();
-//		glTranslatef(-AT/2,0,0);
-//		//rejilla.dibujar(TamVentana);
-//		rejilla.dibujar(AT);
-//		glPopMatrix();
-//
-//		//dibujar ejes
-//		glPushMatrix();
-//		glScalef(1,2.5,1);
-//		dibujarEjesT(1);
-//		glPopMatrix();
-//
-//		//dibujar titulito "TRAYECTORIA"
-//		glColor3f(.0, .0, .0);
-//		glRasterPos2f (AT/-2.5, AT/1.1);
-//		dibujarTitulo("TRAYECTORIA");
-//
-//		//dibujar nombres ejes
-//		glColor3f(.0, .0, .0);
-//		glRasterPos2f (AT/4, AT/40);
-//		dibujarTitulo("X");
-//					
-//		glRasterPos2f (AT/40, AT/1.3);
-//		dibujarTitulo("Y");
-//
-//		//dibujar trayectoria
-//		trayectoria.dibujar(dibuja);
-//	}
-//
-//	else//mostramos la figura
-//	{       
-//		gluOrtho2D(-AF/2.0,AF/2.0,-AF/2,AF/2);
-//		glMatrixMode(GL_MODELVIEW);
-//		glLoadIdentity();
-//
-//		//dibujar rejillas
-//		glPushMatrix();
-//		glTranslatef(-AF/2,-AF/2,0);
-//		//rejilla.dibujar(TamVentana);
-//		rejilla.dibujar(AF);
-//		glPopMatrix();
-//		
-//		// Dibujar ejes
-//		dibujarEjesF(0);
-//
-//		glColor3f(.0, .0, .0);
-//		glRasterPos2f (AF/-2.5, AF/2.5);
-//		dibujarTitulo("FIGURA");
-//	
-//
-//		//dibujar nombres ejes
-//		glColor3f(.0, .0, .0);
-//		glRasterPos2f (AF/4, AF/40);
-//		dibujarTitulo("X");
-//
-//		glRasterPos2f (AF/40, AF/4);
-//		dibujarTitulo("Z");
-//
-//		//dubujar figura
-//		figura.dibujar(dibuja);
-//	}
-//
-//	glFlush();
-//	glutSwapBuffers();
+
+	glutSetWindow(idCentral);
+	glClear (GL_COLOR_BUFFER_BIT);
+	glClearColor(fondoRojo,fondoVerde,fondoAzul,1.0);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+
+	if(!drawFigure)//mostramos trayectoria
+	{	
+		gluOrtho2D(-AT/2,AT/2,0,AT);
+
+		//dibujar rejillas 
+		glMatrixMode(GL_MODELVIEW);
+		glLoadIdentity();
+		glPushMatrix();
+		glTranslatef(-AT/2,0,0);
+		//rejilla.dibujar(TamVentana);
+		rejilla.dibujar(AT);
+		glPopMatrix();
+
+		//dibujar ejes
+		glPushMatrix();
+		glScalef(1,2.5,1);
+		dibujarEjesT(1);
+		glPopMatrix();
+
+		//dibujar titulito "TRAYECTORIA"
+		glColor3f(.0, .0, .0);
+		glRasterPos2f (AT/-2.5, AT/1.1);
+		dibujarTitulo("TRAYECTORIA");
+
+		//dibujar nombres ejes
+		glColor3f(.0, .0, .0);
+		glRasterPos2f (AT/4, AT/40);
+		dibujarTitulo("X");
+					
+		glRasterPos2f (AT/40, AT/1.3);
+		dibujarTitulo("Y");
+
+		//dibujar trayectoria
+		trayectoria.dibujar(dibuja);
+	}
+
+	else//mostramos la figura
+	{       
+		gluOrtho2D(-AF/2.0,AF/2.0,-AF/2,AF/2);
+		glMatrixMode(GL_MODELVIEW);
+		glLoadIdentity();
+
+		//dibujar rejillas
+		glPushMatrix();
+		glTranslatef(-AF/2,-AF/2,0);
+		//rejilla.dibujar(TamVentana);
+		rejilla.dibujar(AF);
+		glPopMatrix();
+		
+		// Dibujar ejes
+		dibujarEjesF(0);
+
+		glColor3f(.0, .0, .0);
+		glRasterPos2f (AF/-2.5, AF/2.5);
+		dibujarTitulo("FIGURA");
+	
+
+		//dibujar nombres ejes
+		glColor3f(.0, .0, .0);
+		glRasterPos2f (AF/4, AF/40);
+		dibujarTitulo("X");
+
+		glRasterPos2f (AF/40, AF/4);
+		dibujarTitulo("Z");
+
+		//dubujar figura
+		figura.dibujar(dibuja);
+	}
+
+	glFlush();
+	glutSwapBuffers();
 }
 void central3dDisplay(void)
 {
@@ -306,33 +308,33 @@ void redisplay (int w, int h)
 	}
 void subDisplay1(void)
 {
-	//glClear (GL_COLOR_BUFFER_BIT);
-	//
-	////Dibujar nombres
-	//glColor3f(.0, .0, .0);
-	//glRasterPos2f (32, 91);
-	//dibujarTitulo("SEBASTIAN MATYSIAK");
-	//glRasterPos2f (32, 105);
-	//dibujarTitulo("MATTEO MASCIOTTA");
-	//
-	////Dibujamos un cuadradito alrededor de los nombres
-	//glColor3f(1.0, 1.0, 1.0);
-	//glLineWidth(10);
-	//glBegin(GL_LINES);
-	//	glVertex2f(20.0,20.0); 
-	//	glVertex2f(180.0,20.0);
-	//
-	//	glVertex2f(20.0,20.0); 
-	//	glVertex2f(20.0,180.0);
+	glClear (GL_COLOR_BUFFER_BIT);
+	
+	//Dibujar nombres
+	glColor3f(.0, .0, .0);
+	glRasterPos2f (32, 91);
+	dibujarTitulo("SEBASTIAN MATYSIAK");
+	glRasterPos2f (32, 105);
+	dibujarTitulo("MATTEO MASCIOTTA");
+	
+	//Dibujamos un cuadradito alrededor de los nombres
+	glColor3f(1.0, 1.0, 1.0);
+	glLineWidth(10);
+	glBegin(GL_LINES);
+		glVertex2f(20.0,20.0); 
+		glVertex2f(180.0,20.0);
+	
+		glVertex2f(20.0,20.0); 
+		glVertex2f(20.0,180.0);
 
-	//	glVertex2f(180.0,20.0); 
-	//	glVertex2f(180.0,180.0);
+		glVertex2f(180.0,20.0); 
+		glVertex2f(180.0,180.0);
 
-	//	glVertex2f(180.0,180.0); 
-	//	glVertex2f(20.0,180.0);
-	//glEnd();
+		glVertex2f(180.0,180.0); 
+		glVertex2f(20.0,180.0);
+	glEnd();
 
-	//glutSwapBuffers();
+	glutSwapBuffers();
 }
 void redisplay1 (int w, int h)
 	{
@@ -346,83 +348,166 @@ void redisplay1 (int w, int h)
 void subDisplay2(void)
 {
 
-	//glClear (GL_COLOR_BUFFER_BIT); 
-	//glClearColor (fondoRojo,fondoVerde,fondoAzul, 1.0);
+	glClear (GL_COLOR_BUFFER_BIT); 
+	glClearColor (fondoRojo,fondoVerde,fondoAzul, 1.0);
 
-	//if(drawFigure)//mostramos trayectoria
-	//{
-	//	glMatrixMode(GL_PROJECTION);
-	//	glLoadIdentity();
-	//	gluOrtho2D(-AT/2,AT/2,0,AT);
+	if(drawFigure)//mostramos trayectoria
+	{
+		glMatrixMode(GL_PROJECTION);
+		glLoadIdentity();
+		gluOrtho2D(-AT/2,AT/2,0,AT);
 
-	//	//dibujar rejillas
-	//	glMatrixMode(GL_MODELVIEW);
-	//	glLoadIdentity();
-	//	glPushMatrix();
-	//	glTranslatef(-AT/2,0,0);
-	//	//rejilla.dibujar(TamVentana);
-	//	rejilla.dibujar(AT);
-	//	glPopMatrix();
+		//dibujar rejillas
+		glMatrixMode(GL_MODELVIEW);
+		glLoadIdentity();
+		glPushMatrix();
+		glTranslatef(-AT/2,0,0);
+		//rejilla.dibujar(TamVentana);
+		rejilla.dibujar(AT);
+		glPopMatrix();
 
-	//	//dibujar ejes
-	//	glPushMatrix();
-	//	glScalef(1,2.5,1);
-	//	dibujarEjesT(1);
-	//	glPopMatrix();
+		//dibujar ejes
+		glPushMatrix();
+		glScalef(1,2.5,1);
+		dibujarEjesT(1);
+		glPopMatrix();
 
-	//	//dibujar nombres ejes
-	//	glColor3f(.0, .0, .0);
-	//	glRasterPos2f (AT/4, AT/40);
-	//	dibujarTitulo("X");
-	//				
-	//	glRasterPos2f (AT/40, AT/1.3);
-	//	dibujarTitulo("Y");
+		//dibujar nombres ejes
+		glColor3f(.0, .0, .0);
+		glRasterPos2f (AT/4, AT/40);
+		dibujarTitulo("X");
+					
+		glRasterPos2f (AT/40, AT/1.3);
+		dibujarTitulo("Y");
 
-	//	//dibujar titulito "TRAYECTORIA"
-	//	glColor3f(.0, .0, .0);
-	//	glRasterPos2f (AT/-2.5, AT/1.1);
-	//	dibujarTitulo("TRAYECTORIA");
+		//dibujar titulito "TRAYECTORIA"
+		glColor3f(.0, .0, .0);
+		glRasterPos2f (AT/-2.5, AT/1.1);
+		dibujarTitulo("TRAYECTORIA");
 
-	//	//dibujar trayectoria
-	//	trayectoria.dibujar(dibuja);
-	//}
+		//dibujar trayectoria
+		trayectoria.dibujar(dibuja);
+	}
 
-	//else//mostramos la figura
-	//{
-	//	glMatrixMode(GL_PROJECTION);
-	//	glLoadIdentity();
-	//	gluOrtho2D(-AF/2.0,AF/2.0,-AF/2,AF/2);
+	else//mostramos la figura
+	{
+		glMatrixMode(GL_PROJECTION);
+		glLoadIdentity();
+		gluOrtho2D(-AF/2.0,AF/2.0,-AF/2,AF/2);
 
-	//	//dibujar rejillas
-	//	glMatrixMode(GL_MODELVIEW);
-	//	glLoadIdentity();
-	//	glPushMatrix();
-	//	glTranslatef(-AF/2,-AF/2,0);
-	//	//rejilla.dibujar(TamVentana);
-	//	rejilla.dibujar(AF);
-	//	glPopMatrix();
+		//dibujar rejillas
+		glMatrixMode(GL_MODELVIEW);
+		glLoadIdentity();
+		glPushMatrix();
+		glTranslatef(-AF/2,-AF/2,0);
+		//rejilla.dibujar(TamVentana);
+		rejilla.dibujar(AF);
+		glPopMatrix();
 
-	//	// Dibujar ejes
-	//	dibujarEjesF(0);
+		// Dibujar ejes
+		dibujarEjesF(0);
 
-	//	glColor3f(.0, .0, .0);
-	//	glRasterPos2f (AF/-2.5, AF/2.5);
-	//	dibujarTitulo("FIGURA");
+		glColor3f(.0, .0, .0);
+		glRasterPos2f (AF/-2.5, AF/2.5);
+		dibujarTitulo("FIGURA");
 
-	//	//dibujar nombres ejes
-	//	glColor3f(.0, .0, .0);
-	//	glRasterPos2f (AF/4, AF/40);
-	//	dibujarTitulo("X");
+		//dibujar nombres ejes
+		glColor3f(.0, .0, .0);
+		glRasterPos2f (AF/4, AF/40);
+		dibujarTitulo("X");
 
-	//	glRasterPos2f (AF/40, AF/4);
-	//	dibujarTitulo("Z");
+		glRasterPos2f (AF/40, AF/4);
+		dibujarTitulo("Z");
 
-	//	//dibujar figura
-	//	figura.dibujar(dibuja);
-	//}
+		//dibujar figura
+		figura.dibujar(dibuja);
+	}
 
-	//glFlush();
-	//glutSwapBuffers();
+	glFlush();
+	glutSwapBuffers();
+}
+
+
+void subDisplay2inv(void)
+{
+
+	glClear (GL_COLOR_BUFFER_BIT); 
+	glClearColor (fondoRojo,fondoVerde,fondoAzul, 1.0);
+
+	if(!drawFigure)//mostramos trayectoria
+	{
+		glMatrixMode(GL_PROJECTION);
+		glLoadIdentity();
+		gluOrtho2D(-AT/2,AT/2,0,AT);
+
+		//dibujar rejillas
+		glMatrixMode(GL_MODELVIEW);
+		glLoadIdentity();
+		glPushMatrix();
+		glTranslatef(-AT/2,0,0);
+		//rejilla.dibujar(TamVentana);
+		rejilla.dibujar(AT);
+		glPopMatrix();
+
+		//dibujar ejes
+		glPushMatrix();
+		glScalef(1,2.5,1);
+		dibujarEjesT(1);
+		glPopMatrix();
+
+		//dibujar nombres ejes
+		glColor3f(.0, .0, .0);
+		glRasterPos2f (AT/4, AT/40);
+		dibujarTitulo("X");
+					
+		glRasterPos2f (AT/40, AT/1.3);
+		dibujarTitulo("Y");
+
+		//dibujar titulito "TRAYECTORIA"
+		glColor3f(.0, .0, .0);
+		glRasterPos2f (AT/-2.5, AT/1.1);
+		dibujarTitulo("TRAYECTORIA");
+
+		//dibujar trayectoria
+		trayectoria.dibujar(dibuja);
+	}
+
+	else//mostramos la figura
+	{
+		glMatrixMode(GL_PROJECTION);
+		glLoadIdentity();
+		gluOrtho2D(-AF/2.0,AF/2.0,-AF/2,AF/2);
+
+		//dibujar rejillas
+		glMatrixMode(GL_MODELVIEW);
+		glLoadIdentity();
+		glPushMatrix();
+		glTranslatef(-AF/2,-AF/2,0);
+		//rejilla.dibujar(TamVentana);
+		rejilla.dibujar(AF);
+		glPopMatrix();
+
+		// Dibujar ejes
+		dibujarEjesF(0);
+
+		glColor3f(.0, .0, .0);
+		glRasterPos2f (AF/-2.5, AF/2.5);
+		dibujarTitulo("FIGURA");
+
+		//dibujar nombres ejes
+		glColor3f(.0, .0, .0);
+		glRasterPos2f (AF/4, AF/40);
+		dibujarTitulo("X");
+
+		glRasterPos2f (AF/40, AF/4);
+		dibujarTitulo("Z");
+
+		//dibujar figura
+		figura.dibujar(dibuja);
+	}
+
+	glFlush();
+	glutSwapBuffers();
 }
 
 
@@ -525,6 +610,21 @@ void inicializaSub2 (void)
 	glutReshapeFunc (redisplay2);
 
 	}
+
+
+
+
+
+void inicializaSub3d (void) 
+	{
+
+	// selecciona el color de borrado 
+	glClearColor (1.0, 1.0, 1.0, 1.0);
+
+	}
+
+
+
 
 
 void inicializa3D(void){
@@ -770,6 +870,8 @@ void main(int argc, char** argv)
  
 
 glutInitWindowSize (700, 700); 
+
+
 	//------Ventana con dibujo en 3D-------
 	idv3d = glutCreateWindow("dibujo en 3D");
 	glutDisplayFunc(v3Ddisplay);
@@ -779,6 +881,14 @@ glutInitWindowSize (700, 700);
 	id3dCentral = glutCreateSubWindow(idv3d,0,0,577,620);
      inicializa3dCentral();
 	glutDisplayFunc(central3dDisplay);
+	
+	idSub23d = glutCreateSubWindow(id3dCentral, 0,0,200,200);
+	inicializaSub3d();
+	glutDisplayFunc(subDisplay2);
+
+	idSub13d = glutCreateSubWindow(id3dCentral, 200,0,200,200);
+	inicializaSub3d();
+glutDisplayFunc(subDisplay2inv);
 	
 	
 // GLUI PRUEBA -------------------------------------------------------------
@@ -792,9 +902,8 @@ application's idle events.  If you do not have an idle callback, pass in NULL.
 	//Create a new GLUI window using
 	// GLUI *glui = GLUI_Master.create_glui("GLUI_WIN",0,550,0);
 
-	GLUI *glui2 = GLUI_Master.create_glui_subwindow( idv3d,
-    GLUI_SUBWINDOW_BOTTOM );
-
+	
+//menu derecha
 	 GLUI *glui = GLUI_Master.create_glui_subwindow( idv3d,
 		 GLUI_SUBWINDOW_RIGHT );
 	 new GLUI_StaticText( glui, "Menu de control" );
@@ -812,9 +921,10 @@ application's idle events.  If you do not have an idle callback, pass in NULL.
 	//cargar fichero button
 	new GLUI_Button( glui, "Cargar", CARGAR_ID, control_cb);
 
-
+	//menu abajo
 	
-
+	GLUI *glui2 = GLUI_Master.create_glui_subwindow( idv3d,
+    GLUI_SUBWINDOW_BOTTOM );
 	GLUI_Rotation *view_rot = new GLUI_Rotation(glui2, "Objetos", view_rotate );
 	view_rot->set_spin( 1.0 );
 	new GLUI_Column( glui2, false );
