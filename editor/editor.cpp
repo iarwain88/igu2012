@@ -42,7 +42,7 @@ float sphere_rotate[16] = { 1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1 };
 float torus_rotate[16] = { 1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1 };
 float view_rotate[16] = { 1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1 };
 float obj_pos[] = { 0.0, 0.0, 0.0 };
-
+GLUI_EditText *edittext;
 
 
 /********** User IDs for callbacks ********/
@@ -78,6 +78,20 @@ void guardar(int b)
 void cargar(int a)
 {
 	ifstream fichero(fnombre);
+	if (fichero.is_open() == true)
+	{
+		fichero >> AT;
+		trayectoria.cargar(fichero);
+		fichero >> AF;
+		figura.cargar(fichero);	
+	}
+	fichero.close();
+}	
+
+void cargar3d()
+{ cout << "nombre fichero: " << edittext->get_text() <<endl;
+
+	ifstream fichero(edittext->get_text());
 	if (fichero.is_open() == true)
 	{
 		fichero >> AT;
@@ -742,6 +756,14 @@ void borrarUltimoPunto(int a)
 	}
 }
 void cambiarColor(int a) {}
+void refreshSubventanas3d(){
+
+				glutSetWindow(idSub13d);
+				glutPostRedisplay();
+				glutSetWindow(idSub23d);
+				glutPostRedisplay();
+}
+
 void crearMenu()
 {
 	int menuColorRejilla = glutCreateMenu(cambiarColorRejilla);
@@ -794,7 +816,8 @@ void control_cb( int control )
 {
 	if ( control == CARGAR_ID )
 	{
-		cargar(1);
+		cargar3d();
+		refreshSubventanas3d();
 	}/*
 	else if ( control == DISABLE_ID )
 	{
@@ -826,7 +849,7 @@ void main(int argc, char** argv)
 	// Indica la posici�n inicial (xmin,ymin) 
 	glutInitWindowPosition (100, 100);
 
-	/* ahora para probar el codigo no sirve 
+	
 	cout << "Pon el nombre del fichero: ";
 	cin >> fnombre;
 
@@ -844,7 +867,7 @@ void main(int argc, char** argv)
 		cout << "Cargado valor por defecto: 400 " <<endl;}
 	else 
 		AF = temp;
-*/
+
 
 	// Abre la ventana con el t�tulo indicado
 	idPrincipal = glutCreateWindow ("Editor de figuras - IGU 2012");
@@ -910,7 +933,7 @@ application's idle events.  If you do not have an idle callback, pass in NULL.
 	 new GLUI_Separator( glui );
 	//glui->add_checkbox( "Lighting", &lighting );
 	
-	GLUI_EditText *edittext =
+	edittext =
      glui->add_edittext( "Text:", GLUI_EDITTEXT_TEXT,file);
 
 	edittext->set_text("fichero");
