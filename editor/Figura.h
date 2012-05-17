@@ -21,12 +21,16 @@ public:
 	// Dibuja la figura con OpenGL
 	void dibujar(bool dibuja) const;
 
+	void Figura::dibujar3D() const;
+
 	void borrarUltimoPunto();
 
 	void cambiarColor(float r, float v, float a);
 
 	// Actualiza proximo Punto
 	void actualizaProximoPunto(const Vec2& nueva_posicion);
+
+	void guardarPunto(Vec2 punto);
 
 	// Añade el punto actual (_proximoPunto) a la figura
 	void fijarPunto();
@@ -47,10 +51,13 @@ public:
 
 	VectorVec2 get_puntos();
 
+	void Figura::set_puntos(int pos, Vec2 punto);
+
 private:
 	Vec2 _proximoPunto; // Proximo punto que se añadirá
 	VectorVec2 _puntos; // Vector de puntos de la figura
 	float rojo, verde, azul;
+	//vector<int>::iterator it;
 };
 
 

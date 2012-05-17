@@ -26,6 +26,19 @@ void Figura::dibujar(bool dibuja) const
 	glEnd();
 }
 
+void Figura::dibujar3D() const
+{
+	glColor3f(1, 1, 1);
+	glLineWidth(1.0f);
+	glBegin(GL_LINE_LOOP);
+
+	for( unsigned int i = 0; i < total() ; ++i)
+	{
+		glVertex3f(_puntos[i].x, 0.0, - _puntos[i].y);
+	}
+	glEnd();
+}
+
 void Figura::borrarUltimoPunto()
 {
 	_puntos.pop_back();
@@ -41,6 +54,11 @@ void Figura::cambiarColor(float r, float v, float a)
 void Figura::actualizaProximoPunto(const Vec2& punto)
 {
 	_proximoPunto = punto;
+}
+
+void Figura::guardarPunto(Vec2 punto)
+{
+	_puntos.push_back(punto);
 }
 
 void Figura::fijarPunto()
@@ -89,6 +107,11 @@ void Figura::cargar(istream& input )
 VectorVec2 Figura::get_puntos()
 {
 	return _puntos;
+}
+
+void Figura::set_puntos(int pos, Vec2 punto)
+{
+	_puntos.insert(_puntos.begin() + pos, punto);
 }
 
 void Figura::limpiarFigura()

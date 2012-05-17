@@ -7,6 +7,8 @@
 #include "Rejilla.h"
 #include "Trayectoria.h"
 
+//visualiza distorsionado
+
 using namespace std;
 
 char  fichero[128];
@@ -33,21 +35,114 @@ int fondoAzul = 1.0;
 Figura  figura; //ventana ischierda
 Trayectoria  trayectoria; //dibujo de trayectoria
 Rejilla rejilla;  //para dibujar rejillas
+Figura figuras[10]; //para guardar figuras de extrusion
 
+void cargar(int a)
+{
+	ifstream fichero(fnombre);
+	if (fichero.is_open() == true)
+	{
+		fichero >> AT;
+		trayectoria.cargar(fichero);
+		fichero >> AF;
+		figura.cargar(fichero);	
+	}
+	fichero.close();
+}	
 void extrusion()
 {
+
+	//// Create
+ //   vector<vector<int>> figura1vec(7,vector<int>(2));
+
+	//figura1vec[0][0] = -76;
+	//figura1vec[0][1] = 57;
+	//figura1vec[1][0] = 72;
+	//figura1vec[1][1] = 58;
+	//figura1vec[2][0] = 159;
+	//figura1vec[2][1] = -26;
+	//figura1vec[3][0] = 113;
+	//figura1vec[3][1] = -25;
+	//figura1vec[4][0] = -75;
+	//figura1vec[5][1] = -120;
+	//figura1vec[6][0] = -179;
+	//figura1vec[6][1] = 55;
+	//figura1vec[7][0] = -106;
+	//figura1vec[7][1] = 115;
+
+	//vector<vector<int>> figura2vec(7,vector<int>(2));
+
+	//for (int i = 0; i < 7; i++)
+	//{
+	//	cout << figura2vec[i][0] << endl;
+	//	figura2vec[i][0] = figura2vec[i][0] + primerPuntoVecTrayect.x;
+	//	cout << figura2vec[i][0] << endl;
+	//}
+
+	/*glColor3f(1, 1, 1);
+	glLineWidth(1.0f);
+	glBegin(GL_LINE_LOOP);
+	for(int i = 0; i < 7 ; ++i)
+	{
+			glVertex3f(figura1vec[i][0], 0.0, - figura1vec[i][1]);
+	}
+	glEnd();*/
+
+
 	//cojo la figura y trayectoria
 	//cada punto(x) de esta figura (en sentido antihorario) traslado sobre el x valor del vector(x) de la trayectoria. 
-	//guardo cada figura trasladado en un estructura de datos añadiendo la componente y
+	//guardo cada figura trasladada en un estructura de datos añadiendo la componente y
 	//visualizo en 3 dimensiones
+	cargar(1);
+
+	//numero de puntos de la figura principal
 	int n = figura.get_puntos().size();
-	VectorVec2 temp = trayectoria.get_pTrayectoria();
+		
+	//guardamos la figura principal
 	for (int i = 0; i < n; i++)
 	{
-
+		figuras[0].guardarPunto(figura.get_puntos().at(i));	
 	}
 
-	
+
+	//copiar la figura principal 
+	/*for (int i = 0; i < n; i++)
+	{
+		figuras[1].guardarPunto(figuras[0].get_puntos().at(i));	
+	}*/
+
+	////comprobar puntos
+	//for (int i = 0; i < n; i++)
+	//{
+	//	cout << figuras[0].get_puntos().at(i).x << " " << figuras[0].get_puntos().at(i).y << endl;	
+	//}
+
+	//for (int i = 0; i < n; i++)
+	//{
+	//	cout << figuras[1].get_puntos().at(i).x << " " << figuras[1].get_puntos().at(i).y << endl;	
+	//}
+
+	VectorVec2 trayectoriaAux = trayectoria.get_pTrayectoria();
+	Vec2 primerPuntoVecTrayect = trayectoriaAux.at(1);
+	//y trasladar
+	for (int i = n-1; i >= 0; i--)
+	{
+		cout << figuras[0].get_puntos().at(i).x <<endl;
+		//figuras[1].set_puntos(i, (figuras[1].get_puntos().at(i).x + 20, figuras[1].get_puntos().at(i).y));
+		figuras[1].guardarPunto((figuras[0].get_puntos().at(i).x + 20, figuras[0].get_puntos().at(i).y));
+		//cout << figuras[1].get_puntos().at(i).x << endl;
+	}
+
+	for (int i = 0; i < n; i++)
+	{
+		cout << figuras[1].get_puntos().at(i).x <<endl;
+	}
+
+	////dibujar la extrusion
+	glColor3f (1.0, 1.0, 1.0);
+	figuras[0].dibujar3D();
+	figuras[1].dibujar3D();
+
 }
 void actualizarVentanas() //actualizar ventanas cetral y ventana dos al cambiar opciones
 {
@@ -74,18 +169,6 @@ void guardar(int b)
 	figura.guardar(fichero);
 	fichero.close();
 }
-void cargar(int a)
-{
-	ifstream fichero(fnombre);
-	if (fichero.is_open() == true)
-	{
-		fichero >> AT;
-		trayectoria.cargar(fichero);
-		fichero >> AF;
-		figura.cargar(fichero);	
-	}
-	fichero.close();
-}	
 void click_raton(int button, int state, int x, int y)
 {
 
@@ -271,38 +354,40 @@ void central3dDisplay(void)
 	// Eje X color Rojo
 	glColor3f (1.0, 0.0, 0.0);
 	glVertex3f(0.0,0.0,0.0);
-	glVertex3f(10.0,0.0,0.0);
+	glVertex3f(100.0,0.0,0.0);
 
 	// Eje Y color Verde
 	glColor3f (0.0, 1.0, 0.0);	
 	glVertex3f(0.0,0.0,0.0);
-	glVertex3f(0.0,10.0,0.0);	
+	glVertex3f(0.0,100.0,0.0);	
 
 	// Eje Z color Azul
 	glColor3f (0.0, 0.0, 1.0);	
 	glVertex3f(0.0,0.0,0.0);
-	glVertex3f(0.0,0.0,10.0);
+	glVertex3f(0.0,0.0,100.0);
 	glEnd();
 
 	glColor3f (1.0, 1.0, 1.0);
 	// Se almacena el estado de la matriz
+
+	cargar(1);
+	//int n = figura.get_puntos().size();
+
 	glPushMatrix();
 
-	// Se dibuja un cubo de lado 3.0 centrado en el origen
-	// Se rota 60º respecto al eje Y, se escala y se traslada
-	glTranslatef(0.0,5.0,5.0);
-	glScalef (1.0, 2.0, 1.0); 
-	glRotatef(60.0,0.0,1.0,0.0);
-	glutWireCube(3.0);
+	//figura.dibujar3D();
 
-	// Se recupera el estado de la matriz
+	////guardamos la figura principal
+	//for (int i = 0; i < n; i++)
+	//{		
+	//	glBegin(GL_POINTS);
+	//	glVertex3f(figura.get_puntos().at(i).x, 0.0, figura.get_puntos().at(i).y);
+	//	cout << figura.get_puntos().at(i).x << " " << figura.get_puntos().at(i).y <<endl;
+	//	glEnd();
+	//}
+
+	extrusion();
 	glPopMatrix();
-
-	// Se dibuja un cubo de lado 4.0 centrado en el origen y
-	// girado 30º respecto al eje Y
-	glColor3f (1.0, 1.0, 0.0);
-	glRotatef(30.0,0.0,1.0,0.0);
-	glutWireCube(4.0);
 
 	glutSwapBuffers();
 }
@@ -517,33 +602,13 @@ void inicializa3D(void)
 {
 
 }
-void inicializa3dCentral(void){
-	{
-		// Prepara la proyección 
+void inicializa3dCentral(void)
+{
 	glMatrixMode (GL_PROJECTION);   
-	glLoadIdentity ();  
-	// Define el volumen de la vista de la proyección perspectiva
-	gluPerspective (90, 1, 1.0, 220.0);    
-
-	gluLookAt(10.0,10.0,10.0,0.0,0.0,0.0,0.0,1.0,0.0);	
-	// Define el marco (coordenadas del origen y tamaño ancho y alto en pixeles)
-	//glViewport (0, 0, 1, 1);
-
-	// Se activa la matriz del modelo de la vista
-	//glMatrixMode (GL_MODELVIEW);
-	
-		//// selecciona el color de borrado 
-		//glClearColor (0.0, 0.0, 0.0, 0.0);
-
-		//// inicializa los valores de la vista 
-		//glMatrixMode(GL_PROJECTION);
-		//glLoadIdentity();
-		//gluOrtho2D(0, TamSubVentana, 0,TamSubVentana);
-
-		//glMatrixMode(GL_MODELVIEW);
-		//glLoadIdentity();
-		//glutReshapeFunc (redisplay1);
-	}
+	glLoadIdentity();  
+	gluPerspective (90, 1, 1.0, 420.0);
+	//gluOrtho2D(0,1,0,1);
+	gluLookAt(100.0,100.0,100.0,0.0,0.0,0.0,0.0,1.0,0.0);	
 }
 void inicializarMenu(int a) 
 {
