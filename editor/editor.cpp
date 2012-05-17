@@ -8,6 +8,7 @@
 #include "Trayectoria.h"
 
 //visualiza distorsionado
+//no dibuja desde y=0..
 
 using namespace std;
 
@@ -51,98 +52,42 @@ void cargar(int a)
 }	
 void extrusion()
 {
+//----------------------------------------------------cargamos la trayectoria y la figura del fichero-------------------------------------------------------//
 
-	//// Create
- //   vector<vector<int>> figura1vec(7,vector<int>(2));
-
-	//figura1vec[0][0] = -76;
-	//figura1vec[0][1] = 57;
-	//figura1vec[1][0] = 72;
-	//figura1vec[1][1] = 58;
-	//figura1vec[2][0] = 159;
-	//figura1vec[2][1] = -26;
-	//figura1vec[3][0] = 113;
-	//figura1vec[3][1] = -25;
-	//figura1vec[4][0] = -75;
-	//figura1vec[5][1] = -120;
-	//figura1vec[6][0] = -179;
-	//figura1vec[6][1] = 55;
-	//figura1vec[7][0] = -106;
-	//figura1vec[7][1] = 115;
-
-	//vector<vector<int>> figura2vec(7,vector<int>(2));
-
-	//for (int i = 0; i < 7; i++)
-	//{
-	//	cout << figura2vec[i][0] << endl;
-	//	figura2vec[i][0] = figura2vec[i][0] + primerPuntoVecTrayect.x;
-	//	cout << figura2vec[i][0] << endl;
-	//}
-
-	/*glColor3f(1, 1, 1);
-	glLineWidth(1.0f);
-	glBegin(GL_LINE_LOOP);
-	for(int i = 0; i < 7 ; ++i)
-	{
-			glVertex3f(figura1vec[i][0], 0.0, - figura1vec[i][1]);
-	}
-	glEnd();*/
-
-
-	//cojo la figura y trayectoria
-	//cada punto(x) de esta figura (en sentido antihorario) traslado sobre el x valor del vector(x) de la trayectoria. 
-	//guardo cada figura trasladada en un estructura de datos añadiendo la componente y
-	//visualizo en 3 dimensiones
 	cargar(1);
 
-	//numero de puntos de la figura principal
-	int n = figura.get_puntos().size();
+//----------------------------------------------------guardamos el numero de elementos de figura y trayectoria-------------------------------------------------------//
+
+	int n = figura.total();
+	int w = trayectoria.total();
 		
-	//guardamos la figura principal
+//----------------------------------------------------copiamos la figura principal para la base de traslación-------------------------------------------------------//
+	
 	for (int i = 0; i < n; i++)
 	{
 		figuras[0].guardarPunto(figura.get_puntos().at(i));	
 	}
 
-
-	//copiar la figura principal 
-	/*for (int i = 0; i < n; i++)
-	{
-		figuras[1].guardarPunto(figuras[0].get_puntos().at(i));	
-	}*/
-
-	////comprobar puntos
-	//for (int i = 0; i < n; i++)
-	//{
-	//	cout << figuras[0].get_puntos().at(i).x << " " << figuras[0].get_puntos().at(i).y << endl;	
-	//}
-
-	//for (int i = 0; i < n; i++)
-	//{
-	//	cout << figuras[1].get_puntos().at(i).x << " " << figuras[1].get_puntos().at(i).y << endl;	
-	//}
+//----------------------------------------------------copiamos puntos de la trayectoria para poder trasladar la figura-------------------------------------------------------//
 
 	VectorVec2 trayectoriaAux = trayectoria.get_pTrayectoria();
-	Vec2 primerPuntoVecTrayect = trayectoriaAux.at(1);
-	//y trasladar
-	for (int i = n-1; i >= 0; i--)
+	
+//----------------------------------------------------traslación de figuras-------------------------------------------------------//
+
+	for (int h = 0; h < w-1; h++)
 	{
-		cout << figuras[0].get_puntos().at(i).x <<endl;
-		//figuras[1].set_puntos(i, (figuras[1].get_puntos().at(i).x + 20, figuras[1].get_puntos().at(i).y));
-		figuras[1].guardarPunto((figuras[0].get_puntos().at(i).x + 20, figuras[0].get_puntos().at(i).y));
-		//cout << figuras[1].get_puntos().at(i).x << endl;
+		for (int i = 0; i < n; i++)
+		{
+			figuras[h+1].guardarPunto(Vec2(figuras[0].get_puntos().at(i).x + trayectoriaAux.at(h+1).x, figuras[h].get_puntos().at(i).y));
+		}		
 	}
 
-	for (int i = 0; i < n; i++)
+//----------------------------------------------------dibujar la extrusion-------------------------------------------------------//
+	
+	for (int i = 0; i < w; i++)
 	{
-		cout << figuras[1].get_puntos().at(i).x <<endl;
+		figuras[i].dibujar3D(trayectoriaAux,i);
 	}
-
-	////dibujar la extrusion
-	glColor3f (1.0, 1.0, 1.0);
-	figuras[0].dibujar3D();
-	figuras[1].dibujar3D();
-
 }
 void actualizarVentanas() //actualizar ventanas cetral y ventana dos al cambiar opciones
 {
@@ -354,39 +299,25 @@ void central3dDisplay(void)
 	// Eje X color Rojo
 	glColor3f (1.0, 0.0, 0.0);
 	glVertex3f(0.0,0.0,0.0);
-	glVertex3f(100.0,0.0,0.0);
+	glVertex3f(200.0,0.0,0.0);
 
 	// Eje Y color Verde
 	glColor3f (0.0, 1.0, 0.0);	
 	glVertex3f(0.0,0.0,0.0);
-	glVertex3f(0.0,100.0,0.0);	
+	glVertex3f(0.0,200.0,0.0);	
 
 	// Eje Z color Azul
 	glColor3f (0.0, 0.0, 1.0);	
 	glVertex3f(0.0,0.0,0.0);
-	glVertex3f(0.0,0.0,100.0);
+	glVertex3f(0.0,0.0,200.0);
 	glEnd();
 
 	glColor3f (1.0, 1.0, 1.0);
-	// Se almacena el estado de la matriz
 
 	cargar(1);
-	//int n = figura.get_puntos().size();
 
 	glPushMatrix();
-
-	//figura.dibujar3D();
-
-	////guardamos la figura principal
-	//for (int i = 0; i < n; i++)
-	//{		
-	//	glBegin(GL_POINTS);
-	//	glVertex3f(figura.get_puntos().at(i).x, 0.0, figura.get_puntos().at(i).y);
-	//	cout << figura.get_puntos().at(i).x << " " << figura.get_puntos().at(i).y <<endl;
-	//	glEnd();
-	//}
-
-	extrusion();
+		extrusion();
 	glPopMatrix();
 
 	glutSwapBuffers();
@@ -606,9 +537,9 @@ void inicializa3dCentral(void)
 {
 	glMatrixMode (GL_PROJECTION);   
 	glLoadIdentity();  
-	gluPerspective (90, 1, 1.0, 420.0);
+	gluPerspective (90, 1, 1.0, 1000.0);
 	//gluOrtho2D(0,1,0,1);
-	gluLookAt(100.0,100.0,100.0,0.0,0.0,0.0,0.0,1.0,0.0);	
+	gluLookAt(0.0,40.0,200.0,0.0,0.0,0.0,0.0,1.0,0.0);	
 }
 void inicializarMenu(int a) 
 {

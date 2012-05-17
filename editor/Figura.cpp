@@ -26,7 +26,7 @@ void Figura::dibujar(bool dibuja) const
 	glEnd();
 }
 
-void Figura::dibujar3D() const
+void Figura::dibujar3D(VectorVec2 trayectoriaAux, int pos) const
 {
 	glColor3f(1, 1, 1);
 	glLineWidth(1.0f);
@@ -34,7 +34,7 @@ void Figura::dibujar3D() const
 
 	for( unsigned int i = 0; i < total() ; ++i)
 	{
-		glVertex3f(_puntos[i].x, 0.0, - _puntos[i].y);
+		glVertex3f( _puntos[i].x, trayectoriaAux.at(pos).y, -_puntos[i].y);
 	}
 	glEnd();
 }

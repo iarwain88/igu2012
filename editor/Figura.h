@@ -21,7 +21,7 @@ public:
 	// Dibuja la figura con OpenGL
 	void dibujar(bool dibuja) const;
 
-	void Figura::dibujar3D() const;
+	void dibujar3D(VectorVec2 trayectoriaAux, int pos) const;
 
 	void borrarUltimoPunto();
 
