@@ -282,31 +282,49 @@ void central3dDisplay(void)
 {
 	
 	
-	glClear (GL_COLOR_BUFFER_BIT);
-	
-	//Dibujar nombres
-	glColor3f(.0, .0, .0);
-	glRasterPos2f (32, 91);
-	dibujarTitulo("SEBASTIAN MATYSIAK");
-	glRasterPos2f (32, 105);
-	dibujarTitulo("MATTEO MASCIOTTA");
-	
-	//Dibujamos un cuadradito alrededor de los nombres
-	glColor3f(1.0, 1.0, 1.0);
-	glLineWidth(10);
+	glClear(GL_COLOR_BUFFER_BIT);
+	glClearColor (0.0, 0.0, 0.0, 0.0);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+
 	glBegin(GL_LINES);
-		glVertex2f(20.0,20.0); 
-		glVertex2f(180.0,20.0);
-	
-		glVertex2f(20.0,20.0); 
-		glVertex2f(20.0,180.0);
+	// Eje X color Rojo
+	glColor3f (1.0, 0.0, 0.0);
+	glVertex3f(0.0,0.0,0.0);
+	glVertex3f(100.0,0.0,0.0);
 
-		glVertex2f(180.0,20.0); 
-		glVertex2f(180.0,180.0);
+	// Eje Y color Verde
+	glColor3f (0.0, 1.0, 0.0);	
+	glVertex3f(0.0,0.0,0.0);
+	glVertex3f(0.0,100.0,0.0);	
 
-		glVertex2f(180.0,180.0); 
-		glVertex2f(20.0,180.0);
+	// Eje Z color Azul
+	glColor3f (0.0, 0.0, 1.0);	
+	glVertex3f(0.0,0.0,0.0);
+	glVertex3f(0.0,0.0,100.0);
 	glEnd();
+
+	glColor3f (1.0, 1.0, 1.0);
+	// Se almacena el estado de la matriz
+
+	cargar(1);
+	//int n = figura.get_puntos().size();
+
+	glPushMatrix();
+
+	//figura.dibujar3D();
+
+	////guardamos la figura principal
+	//for (int i = 0; i < n; i++)
+	//{		
+	//	glBegin(GL_POINTS);
+	//	glVertex3f(figura.get_puntos().at(i).x, 0.0, figura.get_puntos().at(i).y);
+	//	cout << figura.get_puntos().at(i).x << " " << figura.get_puntos().at(i).y <<endl;
+	//	glEnd();
+	//}
+
+	//extrusion();
+	glPopMatrix();
 
 	glutSwapBuffers();
 }
@@ -651,16 +669,11 @@ void inicializa3D(void){
 void inicializa3dCentral(void){
 	{
 
-	// selecciona el color de borrado 
-	glClearColor (0.0, 0.0, 1.0, 0.0);
-
-	// inicializa los valores de la vista 
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	gluOrtho2D(0, 400, 0,400);
-	
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
+	glMatrixMode (GL_PROJECTION);   
+	glLoadIdentity();  
+	gluPerspective (90, 1, 1.0, 420.0);
+	//gluOrtho2D(0,1,0,1);
+	gluLookAt(100.0,100.0,100.0,0.0,0.0,0.0,0.0,1.0,0.0);	
 	
 		
 	}
@@ -867,7 +880,7 @@ void main(int argc, char** argv)
 		cout << "Cargado valor por defecto: 400 " <<endl;}
 	else 
 		AF = temp;
-
+/*
 
 	// Abre la ventana con el t�tulo indicado
 	idPrincipal = glutCreateWindow ("Editor de figuras - IGU 2012");
@@ -890,6 +903,7 @@ void main(int argc, char** argv)
 	inicializaCentral();
 	glutDisplayFunc(centralDisplay);
 
+	*/
  
 
 glutInitWindowSize (700, 700); 
@@ -905,11 +919,11 @@ glutInitWindowSize (700, 700);
      inicializa3dCentral();
 	glutDisplayFunc(central3dDisplay);
 	
-	idSub23d = glutCreateSubWindow(id3dCentral, 0,0,200,200);
+	idSub23d = glutCreateSubWindow(id3dCentral, 0,0,100,100);
 	inicializaSub3d();
 	glutDisplayFunc(subDisplay2);
 
-	idSub13d = glutCreateSubWindow(id3dCentral, 200,0,200,200);
+	idSub13d = glutCreateSubWindow(id3dCentral, 100,0,100,100);
 	inicializaSub3d();
 glutDisplayFunc(subDisplay2inv);
 	
@@ -974,11 +988,11 @@ application's idle events.  If you do not have an idle callback, pass in NULL.
 // END GLUI PRUEBA -------------------------------------------------------------
 
 	// Inicializar valores
-	inicializa ();
+//	inicializa ();
 
 	//inicializar menu
-	glutSetWindow(idCentral);
-	crearMenu();
+//	glutSetWindow(idCentral);
+//	crearMenu();
 
 	// Comienza el bucle de dibujo y proceso de eventos.
 	glutMainLoop();
