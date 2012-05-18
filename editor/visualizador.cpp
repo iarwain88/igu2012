@@ -54,14 +54,15 @@ float rotationX = 0.0, rotationY = 0.0;
 
 /** These are the live variables passed into GLUI ***/
 int   obj_type = 1;
-int   segments = 8;
-int   segments2 = 8;
+int   segments = 20;
+int   segments2 = 20;
 
 float scale = 1;
 int   show_sphere=1;
 int   show_torus=1;
 int   show_axes = 1;
 int   show_text = 1;
+int show_teapot = 0;
 
 /********** User IDs for callbacks ********/
 #define CARGAR_ID            304
@@ -289,8 +290,11 @@ void myGlutDisplay( void )
 	glLoadIdentity();
 
 
-	glTranslatef( 0.0, 0.0, -2.6f );
+	glTranslatef( 0, 0.0, -2.6f );
 	glTranslatef( 0.0, 0.0, zoomZ );
+		if (show_teapot && show_sphere)
+		glTranslatef( -0.7, 0.0,0);
+		
 	glRotatef( rotationY, 0.0, 1.0, 0.0 );
 	glRotatef( rotationX, 1.0, 0.0, 0.0 );
 
@@ -322,7 +326,13 @@ void myGlutDisplay( void )
 	
 	if ( show_sphere)
 		glutWireSphere( .4, segments, segments );
+		
+
+	if(show_teapot && show_sphere)
+	  glTranslatef(1, 0.0, 0.0 );
 	
+	if ( show_teapot)		
+		glutWireTeapot(0.3);
 	//if ( show_axes )
 	//	draw_axes(.52f);
 	
@@ -688,7 +698,8 @@ glutInitWindowSize (700, 700);
 
 	//------subventana 3D Central-------
 	id3dCentral = glutCreateSubWindow(idv3d,0,0,577,620);
-    		glutDisplayFunc( myGlutDisplay );
+   
+	glutDisplayFunc( myGlutDisplay );
 
 	GLUI_Master.set_glutReshapeFunc( myGlutReshape );  
 	
@@ -727,7 +738,7 @@ glutDisplayFunc(subDisplay2inv);
 		 GLUI_SUBWINDOW_RIGHT );
 	 new GLUI_StaticText( glui, "Menu de control" );
 	 new GLUI_Separator( glui );
-	//glui->add_checkbox( "Lighting", &lighting );
+	
 	
 	edittext =
      glui->add_edittext( "Text:", GLUI_EDITTEXT_TEXT,file);
@@ -735,6 +746,7 @@ glutDisplayFunc(subDisplay2inv);
 	edittext->set_text("tio");
 	edittext->set_h(20);
 	edittext->set_w(50);
+	
 
 	/**** Link windows to GLUI, and register idle callback ******/
 
@@ -743,7 +755,15 @@ glutDisplayFunc(subDisplay2inv);
 
 	//cargar fichero button
 	new GLUI_Button( glui, "Cargar", CARGAR_ID, control_cb);
-
+new GLUI_Separator( glui );
+	glui->add_checkbox( "tetera", &show_teapot);
+	glui->add_checkbox( "esfera", &show_sphere);
+new GLUI_Separator( glui );
+	new GLUI_StaticText( glui, "Escala" );
+	GLUI_Scrollbar *sb;
+	sb = new GLUI_Scrollbar( glui, "Escala",GLUI_SCROLL_HORIZONTAL,&scale);
+	sb->set_float_limits(0.2f,4.0f);
+	sb->set_w(100);
 	//menu abajo
 	
 	GLUI *glui2 = GLUI_Master.create_glui_subwindow( idv3d,

@@ -203,10 +203,6 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\editor\editor.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\editor\Figura.cpp"
 				>
 			</File>
@@ -220,6 +216,10 @@
 			</File>
 			<File
 				RelativePath=".\editor\Vec2.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\editor\visualizador.cpp"
 				>
 			</File>
 		</Filter>
