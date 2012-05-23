@@ -28,7 +28,7 @@ void Figura::dibujar(bool dibuja) const
 
 void Figura::dibujar3D(VectorVec2 trayectoriaAux, int pos) const
 {
-	glColor3f(1, 1, 1);
+	glColor3f(0, 0, 0);
 	glLineWidth(1.0f);
 	glBegin(GL_LINE_LOOP);
 
