@@ -68,7 +68,7 @@ void extrusion()
 		figuras[0].guardarPunto(figura.get_puntos().at(i));	
 	}
 
-//----------------------------------------------------copiamos puntos de la trayectoria para poder trasladar la figura-------------------------------------------------------//
+//----------------------------------------------------copiamos puntos de la trayectoria para poder trasladar la figura arriba-------------------------------------------------------//
 
 	VectorVec2 trayectoriaAux = trayectoria.get_pTrayectoria();
 	
@@ -82,12 +82,25 @@ void extrusion()
 		}		
 	}
 
+
 //----------------------------------------------------dibujar la extrusion-------------------------------------------------------//
 	
 	for (int i = 0; i < w; i++)
 	{
 		figuras[i].dibujar3D(trayectoriaAux,i);
 	}
+
+	for (int j = 0; j < n; j++)
+	{
+		glBegin(GL_LINE_STRIP);
+		for (int i = 0; i < w; i++)
+		{
+			glVertex3f(figuras[i].get_puntos().at(j).x, trayectoriaAux.at(i).y, -figuras[i].get_puntos().at(j).y);
+			cout << figuras[i].get_puntos().at(j).x << " " << trayectoriaAux.at(i).y << " " << figuras[i].get_puntos().at(j).y <<endl;
+		}
+		glEnd();
+	}
+	
 }
 void actualizarVentanas() //actualizar ventanas cetral y ventana dos al cambiar opciones
 {
@@ -316,9 +329,10 @@ void central3dDisplay(void)
 
 	cargar(1);
 
-	glPushMatrix();
+	//glPushMatrix();
 		extrusion();
-	glPopMatrix();
+	
+	//glPopMatrix();
 
 	glutSwapBuffers();
 }
@@ -539,7 +553,7 @@ void inicializa3dCentral(void)
 	glLoadIdentity();  
 	gluPerspective (90, 1, 1.0, 1000.0);
 	//gluOrtho2D(0,1,0,1);
-	gluLookAt(0.0,40.0,200.0,0.0,0.0,0.0,0.0,1.0,0.0);	
+	gluLookAt(200.0,200.0,400.0,0.0,0.0,0.0,0.0,1.0,0.0);	
 }
 void inicializarMenu(int a) 
 {
