@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <math.h>
 #include <gl/glut.h>
 #include <gl/glui.h>
 #include <iostream>
@@ -52,16 +53,26 @@ float xy_aspect;
 int   last_x, last_y;
 float rotationX = 0.0, rotationY = 0.0;
 
+
+// angle of rotation for the camera direction
+float angle=0.0;
+// actual vector representing the camera’s direction
+float lx=0.0f,lz=-1.0f,ly=1.0f;
+// XZ position of the camera
+float x=0.0f,z=0.0f,y=0.0f;
+
+
+
 /** These are the live variables passed into GLUI ***/
 int   obj_type = 1;
 int   segments = 10;
 int   segments2 = 10;
 
 float scale = 1;
-int   show_sphere=1;
-int   show_torus=1;
+int   show_sphere=0;
+int   show_torus=0;
 int   show_axes = 1;
-int   show_text = 1;
+int   show_figura = 0;
 int show_teapot = 0;
 
 /********** User IDs for callbacks ********/
@@ -96,8 +107,12 @@ trayectoria.limpiarTrayectoria(); figura.limpiarFigura();
 		trayectoria.cargar(fichero);
 		fichero >> AF;
 		figura.cargar(fichero);	
+		show_figura=1;
 	}
 	fichero.close();
+
+		glutSetWindow(id3dCentral);  
+	glutPostRedisplay();
 }	
 
 
@@ -294,10 +309,8 @@ void myGlutMotion(int x, int y )
 	glutPostRedisplay(); 
 	/*glutSetWindow(idv3d);
 	glutPostRedisplay(); */
- cout << "myGlutMotion " << endl;
-}
 
-/**************************************** myGlutReshape() *************/
+}
 
 void myGlutReshape( int x, int y )
 {
@@ -306,7 +319,7 @@ void myGlutReshape( int x, int y )
 	glViewport( tx, ty, tw, th );
 
 	xy_aspect = (float)tw / (float)th;
- cout << "myGlutReshape " << endl;
+
 	glutPostRedisplay();
 }
 
@@ -341,15 +354,14 @@ void myGlutDisplay( void )
 	glClearColor( .9f, .9f, .9f, 1.0f );
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
+
 	glMatrixMode( GL_PROJECTION );
 	glLoadIdentity();
 	gluPerspective(60.0f,xy_aspect,0.1,15.0);
-	//glFrustum( -xy_aspect*.04, xy_aspect*.04, -.04, .04, .1, 15.0 );
-
-
-	//gluPerspective (90, 1, 1.0, 1000.0);
-	//gluOrtho2D(0,1,0,1);
-	//gluLookAt(400.0,400.0,400.0,0.0,0.0,0.0,0.0,1.0,0.0);	
+	
+	
+	// Set the camera
+gluLookAt(	x, 1.5f+y, z,x+lx, 1.0f+y, z+lz,0.0f, 1.0f, 0.0f);
 
 
 	glMatrixMode( GL_MODELVIEW );
@@ -359,7 +371,7 @@ void myGlutDisplay( void )
 
 	glTranslatef( 0, 0.0, -2.6f );
 	glTranslatef( 0.0, 0.0, zoomZ );
-		if (show_teapot && show_sphere)
+		if ((show_figura && show_sphere)||(show_figura && show_teapot)||(show_teapot && show_sphere))
 		glTranslatef( -0.7, 0.0,0);
 		
 	glRotatef( rotationY, 0.0, 1.0, 0.0 );
@@ -373,64 +385,44 @@ void myGlutDisplay( void )
 	glTranslatef( obj_pos[0], obj_pos[1], -obj_pos[2] ); 
 	//glMultMatrixf( view_rotate );
 
-
-	glScalef( scale, scale, scale );
-
-
-
-
-	/*** Now we render object, using the variables 'obj_type', 'segments', and
-	'wireframe'.  These are _live_ variables, which are transparently 
-	updated by GLUI ***/
-
-	//glPushMatrix();
-
+glScalef( scale, scale, scale );
 	
-	
-	
-//glTranslatef( -.5, 0.0, 0.0 );
 	glMultMatrixf( sphere_rotate );
-	
-	if ( show_sphere)
-	glutWireSphere( .4, segments, segments );
-        
-	glScalef( 0.002, 0.002, 0.002 );
+
+		glScalef( 0.003, 0.003, 0.003 );
 	extrusion();
-	    glScalef( 1, 1, 1 );
+
+
+
+glScalef( scale, scale, scale );
+
+	if (show_figura && show_sphere)
+	  glTranslatef(300, 0.0, 0 );
+
+	if ( show_sphere)
+	glutWireSphere( 100, segments, segments );
+        
+
 		
 	
-	if(show_teapot && show_sphere)
-	  glTranslatef(1, 0.0, 0.0 );
+//if ((show_figura && show_sphere)||(show_figura && show_teapot)||(show_teapot && show_sphere))
+//	  glTranslatef(400, 0.0, 100.0 );
 	
-	if ( show_teapot)		
-		glutWireTeapot(300);
+	//if ( show_teapot)		
+	//	glutWireTeapot(150);
 
 	glScalef( 0.002, 0.002, 0.002 );
 	extrusion();
 	    glScalef( 1, 1, 1 );
 
-	//if ( show_axes )
-	//	draw_axes(.52f);
 	
-
-	
-//	glTranslatef( .5, 0.0, 0.0 );
-//	glMultMatrixf( torus_rotate );
-	//if ( show_torus )
-	//	glutWireTorus( .15,.3,16,segments );
 
 	if ( show_axes ){		
 		glPopMatrix();
 	}
-
-	//glPopMatrix();
-
 	
 	glutSwapBuffers(); 
 }
-
-
-
 
 
 void centralRedisplay (int w, int h)
@@ -711,7 +703,7 @@ void myGlutIdle( void )
 	/*  GLUI_Master.sync_live_all();  -- not needed - nothing to sync in this
 	application  */
  //cout << "myGlutIdle " << endl;
-	glutPostRedisplay();
+		glutPostRedisplay();
 }
 
 /***************************************** myGlutMouse() **********/
@@ -738,17 +730,56 @@ if ( button ==GLUT_RIGHT_BUTTON && button_state == GLUT_DOWN ) {
 
 void myGlutKeyboard(unsigned char Key, int x, int y)
 {
+
+	cout << "glutKeyboard" << endl;
+	float fraction = 0.1f;
+
 	switch(Key)
 	{
-	case 27: 
-	case 'q':
-		exit(0);
-		break;
+	
+		case 'q':
+			exit(0);
+			break;
 	};
 
-	glutPostRedisplay();
+	
+	
 }
 
+
+
+void processSpecialKeys(int key, int xx, int yy) {
+
+	float fraction = 0.1f;
+
+	switch (key) {
+		case GLUT_KEY_LEFT :
+			angle -= 0.01f;
+			lx = sin(angle);
+			lz = -cos(angle);
+			break;
+		case GLUT_KEY_RIGHT :
+			angle += 0.01f;
+			lx = sin(angle);
+			lz = -cos(angle);
+			break;
+		case GLUT_KEY_UP :
+			//x += lx * fraction;
+			//z += lz * fraction;
+			y = y + ly * fraction;
+			cout << "y:" << y <<endl;
+			break;
+		case GLUT_KEY_DOWN :
+			//x -= lx * fraction;
+		//	z -= lz * fraction;
+			y -= ly * fraction;
+			cout << "y:"<<y <<endl;
+			break;
+	};
+	glutSetWindow(id3dCentral);  
+	glutPostRedisplay();
+}
+	
 
 
 
@@ -773,21 +804,22 @@ glutInitWindowSize (700, 700);
 	idv3d = glutCreateWindow("dibujo en 3D");
 	glutDisplayFunc(v3Ddisplay);
 	glutReshapeFunc(redisplay3d);
-	//glutMotionFunc( myGlutMotion );
+	
 	inicializa3D();
 
 	//------subventana 3D Central-------
-	id3dCentral = glutCreateSubWindow(idv3d,0,0,577,620);
-   
+
+   	id3dCentral = glutCreateSubWindow(idv3d,0,0,555,620);
 	glutDisplayFunc( myGlutDisplay );
 
 	GLUI_Master.set_glutReshapeFunc( myGlutReshape );  
 	
-	GLUI_Master.set_glutSpecialFunc( NULL );
+	
 
 	glutMotionFunc( myGlutMotion );
-		GLUI_Master.set_glutKeyboardFunc( myGlutKeyboard );
 	
+	GLUI_Master.set_glutKeyboardFunc( myGlutKeyboard );
+	GLUI_Master.set_glutSpecialFunc(processSpecialKeys);
 	GLUI_Master.set_glutMouseFunc( myGlutMouse );
 		inicializa3dCentral();
 	
@@ -805,14 +837,7 @@ glutDisplayFunc(subDisplay2inv);
 
 	
 // GLUI -------------------------------------------------------------
-	
-	/*
-	GLUI_Master.set_glutIdleFunc( myGlutIdle );
-	GLUI_Master.set_glutReshapeFunc( myGlutReshape );  
-	glutMotionFunc( myGlutMotion );*/
-	//
-
-	
+		
 //menu derecha
 	 GLUI *glui = GLUI_Master.create_glui_subwindow( idv3d,
 		 GLUI_SUBWINDOW_RIGHT );
@@ -836,7 +861,7 @@ glutDisplayFunc(subDisplay2inv);
 	//cargar fichero button
 	new GLUI_Button( glui, "Cargar", CARGAR_ID, control_cb);
 new GLUI_Separator( glui );
-	glui->add_checkbox( "tetera", &show_teapot);
+	//glui->add_checkbox( "tetera", &show_teapot);
 	glui->add_checkbox( "esfera", &show_sphere);
 new GLUI_Separator( glui );
 	new GLUI_StaticText( glui, "Escala" );
@@ -844,6 +869,21 @@ new GLUI_Separator( glui );
 	sb = new GLUI_Scrollbar( glui, "Escala",GLUI_SCROLL_HORIZONTAL,&scale);
 	sb->set_float_limits(0.2f,4.0f);
 	sb->set_w(100);
+
+
+ GLUI_Panel *obj_panel = new GLUI_Panel( glui, "Guia" );
+
+new GLUI_StaticText( obj_panel, "Movimento de" );
+
+new GLUI_StaticText( obj_panel, "la camara:" );
+
+new GLUI_StaticText( obj_panel, "flechas" );
+new GLUI_Separator( obj_panel );
+
+new GLUI_StaticText( obj_panel, "Movimiento de la" );
+new GLUI_StaticText( obj_panel, "camara alrededor " );
+new GLUI_StaticText( obj_panel, "del origen: raton" );
+new GLUI_StaticText( obj_panel, "izquierdo y derecho" );
 	//menu abajo
 	
 	GLUI *glui2 = GLUI_Master.create_glui_subwindow( idv3d,
@@ -871,7 +911,7 @@ new GLUI_Separator( glui );
 
 	/**** We register the idle callback with GLUI, *not* with GLUT ****/
 	GLUI_Master.set_glutIdleFunc( myGlutIdle );
-
+	
 		
 // END GLUI -------------------------------------------------------------
 	
