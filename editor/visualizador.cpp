@@ -421,6 +421,9 @@ glScalef( scale, scale, scale );
 		glPopMatrix();
 	}
 	
+	glutSetWindow(id3dCentral);  
+
+
 	glutSwapBuffers(); 
 }
 
@@ -700,9 +703,6 @@ void myGlutIdle( void )
 	if ( glutGetWindow() != id3dCentral ) 
 		glutSetWindow(id3dCentral);  
 
-	/*  GLUI_Master.sync_live_all();  -- not needed - nothing to sync in this
-	application  */
- //cout << "myGlutIdle " << endl;
 		glutPostRedisplay();
 }
 
@@ -848,7 +848,7 @@ glutDisplayFunc(subDisplay2inv);
 	edittext =
      glui->add_edittext( "Text:", GLUI_EDITTEXT_TEXT,file);
 
-	edittext->set_text("tio");
+	edittext->set_text("figura3");
 	edittext->set_h(20);
 	edittext->set_w(50);
 	
@@ -915,6 +915,8 @@ new GLUI_StaticText( obj_panel, "izquierdo y derecho" );
 		
 // END GLUI -------------------------------------------------------------
 	
+	glutSetWindow(id3dCentral);  
+
 
 	glutMainLoop();
 }

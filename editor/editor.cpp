@@ -731,13 +731,13 @@ void main(int argc, char** argv)
 
 
 	//------Ventana con dibujo en 3D-------
-	idv3d = glutCreateWindow("dibujo en 3 dimesiones");
-	inicializa3D();
-	glutDisplayFunc(v3Ddisplay);
+	//idv3d = glutCreateWindow("dibujo en 3 dimesiones");
+	//inicializa3D();
+	//glutDisplayFunc(v3Ddisplay);
 	//------subventana3DCentral-------
-	id3dCentral = glutCreateSubWindow(idv3d,0,0,400,600);
-	inicializa3dCentral();
-	glutDisplayFunc(central3dDisplay);
+	//id3dCentral = glutCreateSubWindow(idv3d,0,0,400,600);
+	//inicializa3dCentral();
+	//glutDisplayFunc(central3dDisplay);
 	//inicializaSub1();
 	//glutDisplayFunc(subDisplay1);
 
